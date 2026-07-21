@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Smart Parking Management System",
+            "request": "launch",
+            "mainClass": "smartparkingmanagementsystem.SmartParkingManagementSystem",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Verify Serialized Data",
+            "request": "launch",
+            "mainClass": "smartparkingmanagementsystem.SmartParkingManagementSystem",
+            "args": "--verify-data",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Run All Tests",
+            "request": "launch",
+            "mainClass": "smartparkingmanagementsystem.AllTests",
+            "vmArgs": "-ea",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

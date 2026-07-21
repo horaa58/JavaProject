@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SmartParkingManagementSystem" default="jar" basedir=".">
+    <description>Builds, runs, and tests the Smart Parking Management System.</description>
+
+    <property file="nbproject/private/private.properties"/>
+    <property file="nbproject/project.properties"/>
+
+    <path id="compile.classpath">
+        <pathelement path="${javac.classpath}"/>
+    </path>
+    <path id="run.classpath">
+        <pathelement location="${build.classes.dir}"/>
+        <path refid="compile.classpath"/>
+    </path>
+    <path id="test.classpath">
+        <pathelement location="${build.test.classes.dir}"/>
+        <path refid="compile.classpath"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.test.classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}"
+               destdir="${build.classes.dir}"
+               release="${javac.release}"
+               encoding="${source.encoding}"
+               debug="true"
+               includeantruntime="false">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.dir}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="compile-test" depends="init">
+        <!-- Compile both source trees together. This also keeps Test Project
+             reliable on Windows installations with restricted class loading. -->
+        <javac destdir="${build.test.classes.dir}"
+               release="${javac.release}"
+               encoding="${source.encoding}"
+               debug="true"
+               includeantruntime="false">
+            <src path="${src.dir}"/>
+            <src path="${test.src.dir}"/>
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar jarfile="${dist.jar}" basedir="${build.classes.dir}" manifest="${manifest.file}"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="${main.class}" fork="true" failonerror="true" dir="${basedir}">
+            <classpath refid="run.classpath"/>
+            <jvmarg line="${run.jvmargs}"/>
+            <arg line="${application.args}"/>
+        </java>
+    </target>
+
+    <target name="run-single" depends="compile">
+        <java classname="${run.class}" fork="true" failonerror="true" dir="${basedir}">
+            <classpath refid="run.classpath"/>
+            <jvmarg line="${run.jvmargs}"/>
+        </java>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <java classname="${test.main.class}" fork="true" failonerror="true" dir="${basedir}">
+            <classpath refid="test.classpath"/>
+            <assertions><enable/></assertions>
+        </java>
+    </target>
+
+    <target name="test-single" depends="compile-test">
+        <java classname="${test.class}" fork="true" failonerror="true" dir="${basedir}">
+            <classpath refid="test.classpath"/>
+            <assertions><enable/></assertions>
+        </java>
+    </target>
+
+    <target name="debug" depends="compile">
+        <nbjpdastart addressproperty="jpda.address" name="${main.class}" transport="dt_socket">
+            <classpath refid="run.classpath"/>
+            <sourcepath path="${src.dir}"/>
+        </nbjpdastart>
+        <java classname="${main.class}" fork="true" failonerror="true" dir="${basedir}">
+            <classpath refid="run.classpath"/>
+            <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=${jpda.address}"/>
+            <jvmarg line="${run.jvmargs}"/>
+        </java>
+    </target>
+
+    <target name="debug-single" depends="compile">
+        <nbjpdastart addressproperty="jpda.address" name="${run.class}" transport="dt_socket">
+            <classpath refid="run.classpath"/>
+            <sourcepath path="${src.dir}"/>
+        </nbjpdastart>
+        <java classname="${run.class}" fork="true" failonerror="true" dir="${basedir}">
+            <classpath refid="run.classpath"/>
+            <jvmarg value="-agentlib:jdwp=transport=dt_socket,address=${jpda.address}"/>
+        </java>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="javadoc" depends="init">
+        <mkdir dir="${dist.javadoc.dir}"/>
+        <javadoc sourcepath="${src.dir}"
+                 destdir="${dist.javadoc.dir}"
+                 source="${javac.source}"
+                 encoding="${source.encoding}"
+                 failonerror="false"/>
+    </target>
+</project>

@@ -1,0 +1,9 @@
+/bin/
+/build/
+/dist/
+/out/
+/target/
+/nbproject/private/
+*.class
+*.tmp
+*.log
